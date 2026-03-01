@@ -23,6 +23,8 @@
       --accent:#6a4a2f;       /* coffee accent */
       --accent2:#b07a44;      /* caramel */
       --ok:#2ea67b;
+      --warn:#c77a2f;
+      --bad:#c43b3b;
       --ease:cubic-bezier(.2,.9,.2,1);
     }
 
@@ -146,6 +148,8 @@
       justify-content:center;
       align-items:center;
       padding: 22px 0 10px;
+      position: relative;
+      z-index: 1;
     }
     .hero-logo img{
       width: 210px;
@@ -156,6 +160,85 @@
       transition: transform .25s var(--ease);
     }
     .hero-logo img:hover{ transform: translateY(-2px); }
+
+    /* NEW: Stock ticker */
+    .ticker-wrap{
+      position: relative;
+      z-index: 1;
+      margin: 8px 0 14px;
+    }
+    .ticker{
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,.72);
+      border-radius: 999px;
+      box-shadow: 0 10px 25px rgba(42,32,22,.06);
+      overflow:hidden;
+    }
+    .ticker-row{
+      display:flex;
+      gap: 14px;
+      align-items:center;
+      white-space: nowrap;
+      padding: 10px 12px;
+    }
+    .ticker-label{
+      font-size: 12px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: rgba(42,32,22,.82);
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex:0 0 auto;
+    }
+    .ticker-label .mini-dot{
+      width:10px; height:10px; border-radius:99px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 10px 25px rgba(176,122,68,.14);
+    }
+    .ticker-viewport{
+      overflow:hidden;
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+    .ticker-track{
+      display:inline-flex;
+      gap: 18px;
+      align-items:center;
+      will-change: transform;
+      animation: marquee 22s linear infinite;
+      padding-left: 10px;
+    }
+    .ticker:hover .ticker-track{ animation-play-state: paused; }
+    @keyframes marquee{
+      from{ transform: translateX(0); }
+      to{ transform: translateX(-50%); }
+    }
+
+    .tick{
+      display:inline-flex;
+      gap: 10px;
+      align-items:baseline;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(42,32,22,.10);
+      background: rgba(42,32,22,.03);
+      font-size: 13px;
+    }
+    .tick b{ font-weight: 800; }
+    .tick .p{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      font-weight: 800;
+      letter-spacing: .02em;
+    }
+    .tick .chg{
+      font-size: 12px;
+      font-weight: 800;
+      opacity: .9;
+    }
+    .chg.up{ color: #1c7d57; }
+    .chg.down{ color: #a33838; }
+    .chg.flat{ color: rgba(42,32,22,.72); }
 
     /* Filter chips */
     .filters{
@@ -514,9 +597,131 @@
       opacity:.9;
     }
 
-    /* Reduced motion */
+    /* NEW: Floating World Clock */
+    .floating-clock{
+      position: fixed;
+      right: 14px;
+      bottom: 14px;
+      z-index: 120;
+      width: min(360px, calc(100vw - 28px));
+      border: 1px solid rgba(42,32,22,.14);
+      background: rgba(255,255,255,.78);
+      border-radius: 22px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 22px 70px rgba(42,32,22,.18);
+      overflow:hidden;
+      transform: translateZ(0);
+    }
+    .floating-top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(42,32,22,.10);
+      background: rgba(255,255,255,.62);
+    }
+    .floating-title{
+      margin:0;
+      font-size: 12px;
+      letter-spacing:.14em;
+      text-transform: uppercase;
+      color: rgba(42,32,22,.86);
+      display:flex;
+      align-items:center;
+      gap:10px;
+      white-space:nowrap;
+    }
+    .floating-title .mini-dot{
+      width:10px; height:10px; border-radius:99px;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      box-shadow: 0 10px 25px rgba(176,122,68,.14);
+      flex:0 0 auto;
+    }
+    .clock-actions{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      flex:0 0 auto;
+    }
+    .icon-btn{
+      border: 1px solid rgba(42,32,22,.12);
+      background: rgba(42,32,22,.04);
+      color: var(--text);
+      padding: 8px 10px;
+      border-radius: 999px;
+      cursor:pointer;
+      transition: transform .12s var(--ease), background .2s var(--ease), border-color .2s var(--ease);
+      font-size: 12px;
+      line-height: 1;
+    }
+    .icon-btn:hover{ background: rgba(42,32,22,.07); border-color: rgba(42,32,22,.18); }
+    .icon-btn:active{ transform: scale(.98); }
+
+    .floating-body{
+      padding: 10px 12px 12px;
+    }
+    .clock-grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin: 0;
+    }
+    @media (min-width: 520px){
+      .clock-grid{
+        grid-template-columns: repeat(2, minmax(0,1fr));
+      }
+    }
+    .clock-card{
+      border: 1px solid rgba(42,32,22,.10);
+      background: rgba(42,32,22,.03);
+      border-radius: 18px;
+      padding: 10px 10px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      transition: transform .18s var(--ease), background .2s var(--ease), border-color .2s var(--ease);
+    }
+    .clock-card:hover{
+      transform: translateY(-2px);
+      background: rgba(176,122,68,.08);
+      border-color: rgba(176,122,68,.22);
+    }
+    .clock-left{ min-width: 0; }
+    .clock-city{
+      font-weight: 800;
+      font-size: 12px;
+      margin:0;
+      letter-spacing:.02em;
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .clock-sub{
+      margin:4px 0 0;
+      font-size: 11px;
+      color: var(--muted);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .clock-time{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 15px;
+      font-weight: 900;
+      letter-spacing: .04em;
+      white-space:nowrap;
+    }
+
+    /* collapsed state */
+    .floating-clock.collapsed .floating-body{ display:none; }
+    .floating-clock.collapsed{ width: min(320px, calc(100vw - 28px)); }
+
+    /* keep widgets above overlay but under modal */
     @media (prefers-reduced-motion: reduce){
       *{ animation:none !important; transition:none !important; }
+      .ticker-track{ animation:none !important; }
     }
   </style>
 </head>
@@ -549,9 +754,27 @@
 
   <div class="wrap">
 
-    <!-- ✅ Logo placeholder (put your logo at: images/cowomo.png) -->
+    <!-- ✅ Logo placeholder (put your logo at: cowomo.png) -->
     <div class="hero-logo">
       <img src="cowomo.png" alt="COWOMO logo" />
+    </div>
+
+    <!-- ✅ NEW: Stock ticker under logo -->
+    <div class="ticker-wrap" aria-label="Stock ticker">
+      <div class="ticker">
+        <div class="ticker-row">
+          <div class="ticker-label">
+            <span class="mini-dot" aria-hidden="true"></span>
+            Market
+          </div>
+          <div class="ticker-viewport">
+            <div class="ticker-track" id="tickerTrack" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top:8px; font-size:12px; color:var(--muted);">
+        Demo ticker (offline-safe). If you want live prices, I can wire a serverless proxy to avoid API keys in the browser.
+      </div>
     </div>
 
     <main>
@@ -565,6 +788,23 @@
       &copy; 2026 OdotNYC.xyz | All Rights Reserved.
     </footer>
   </div>
+
+  <!-- ✅ Floating World Clock -->
+  <aside class="floating-clock" id="floatingClock" aria-label="Floating world clock">
+    <div class="floating-top">
+      <h2 class="floating-title"><span class="mini-dot" aria-hidden="true"></span>World Clock</h2>
+      <div class="clock-actions">
+        <button class="icon-btn" id="clockCollapseBtn" type="button" title="Collapse">—</button>
+        <button class="icon-btn" id="clockPinBtn" type="button" title="Move (drag)">⇕</button>
+      </div>
+    </div>
+    <div class="floating-body">
+      <div class="clock-grid" id="clockGrid"></div>
+      <div style="margin-top:10px; font-size:12px; color:var(--muted); line-height:1.45;">
+        Tip: Drag the panel by the header to reposition.
+      </div>
+    </div>
+  </aside>
 
   <!-- Detail Overlay -->
   <div class="overlay" id="overlay" aria-hidden="true">
@@ -621,15 +861,249 @@
   </div>
 
   <script>
-    // ---- Sample data (replace with real COWOMO reviews) ----
-    // Tip: For best map accuracy, add lat/lng (optional). If not present, we use the address.
+    // -----------------------------
+    // Floating World Clock (reposition + collapse)
+    // -----------------------------
+    const CLOCKS = [
+      { city: "New York", tz: "America/New_York", label: "NYC" },
+      { city: "Los Angeles", tz: "America/Los_Angeles", label: "LA" },
+      { city: "London", tz: "Europe/London", label: "LDN" },
+      { city: "Lagos", tz: "Africa/Lagos", label: "LOS" },
+      { city: "Tokyo", tz: "Asia/Tokyo", label: "TYO" },
+      { city: "Dubai", tz: "Asia/Dubai", label: "DXB" }
+    ];
+
+    const clockGrid = document.getElementById("clockGrid");
+    const floatingClock = document.getElementById("floatingClock");
+    const clockCollapseBtn = document.getElementById("clockCollapseBtn");
+
+    function fmtTime(tz){
+      return new Intl.DateTimeFormat(undefined, {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true,
+        timeZone: tz
+      }).format(new Date());
+    }
+
+    function fmtSub(tz){
+      return new Intl.DateTimeFormat(undefined, {
+        weekday: "short",
+        month: "short",
+        day: "2-digit",
+        timeZone: tz
+      }).format(new Date());
+    }
+
+    function renderClocks(){
+      clockGrid.innerHTML = "";
+      CLOCKS.forEach(c => {
+        const el = document.createElement("div");
+        el.className = "clock-card";
+        el.innerHTML = `
+          <div class="clock-left">
+            <p class="clock-city">${escapeHtml(c.city)} <span style="opacity:.55; font-weight:900;">· ${escapeHtml(c.label)}</span></p>
+            <p class="clock-sub">${escapeHtml(fmtSub(c.tz))}</p>
+          </div>
+          <div class="clock-time" data-tz="${escapeHtml(c.tz)}">${escapeHtml(fmtTime(c.tz))}</div>
+        `;
+        clockGrid.appendChild(el);
+      });
+    }
+
+    function tickClocks(){
+      document.querySelectorAll(".clock-time[data-tz]").forEach(node => {
+        const tz = node.getAttribute("data-tz");
+        node.textContent = fmtTime(tz);
+      });
+    }
+
+    renderClocks();
+    tickClocks();
+    setInterval(tickClocks, 1000);
+
+    // Collapse toggle
+    clockCollapseBtn.addEventListener("click", () => {
+      floatingClock.classList.toggle("collapsed");
+      clockCollapseBtn.textContent = floatingClock.classList.contains("collapsed") ? "+" : "—";
+      clockCollapseBtn.title = floatingClock.classList.contains("collapsed") ? "Expand" : "Collapse";
+    });
+
+    // Drag-to-move (drag header)
+    (function enableDrag(){
+      const header = floatingClock.querySelector(".floating-top");
+      let dragging = false;
+      let startX = 0, startY = 0;
+      let startRight = 0, startBottom = 0;
+
+      // load saved position
+      try{
+        const saved = JSON.parse(localStorage.getItem("cowomo_clock_pos") || "null");
+        if(saved && typeof saved.right === "number" && typeof saved.bottom === "number"){
+          floatingClock.style.right = saved.right + "px";
+          floatingClock.style.bottom = saved.bottom + "px";
+        }
+      }catch(e){}
+
+      function onDown(e){
+        // don't start drag from button taps
+        if(e.target.closest("button")) return;
+        dragging = true;
+        header.style.cursor = "grabbing";
+        const rect = floatingClock.getBoundingClientRect();
+        startX = (e.touches ? e.touches[0].clientX : e.clientX);
+        startY = (e.touches ? e.touches[0].clientY : e.clientY);
+
+        // compute current right/bottom from viewport
+        startRight = window.innerWidth - rect.right;
+        startBottom = window.innerHeight - rect.bottom;
+
+        document.addEventListener("mousemove", onMove);
+        document.addEventListener("mouseup", onUp);
+        document.addEventListener("touchmove", onMove, { passive: false });
+        document.addEventListener("touchend", onUp);
+      }
+
+      function clamp(n, min, max){ return Math.max(min, Math.min(max, n)); }
+
+      function onMove(e){
+        if(!dragging) return;
+        if(e.cancelable) e.preventDefault();
+        const x = (e.touches ? e.touches[0].clientX : e.clientX);
+        const y = (e.touches ? e.touches[0].clientY : e.clientY);
+
+        const dx = x - startX;
+        const dy = y - startY;
+
+        // moving right decreases "right"
+        let nextRight = startRight - dx;
+        let nextBottom = startBottom - dy;
+
+        // clamp to viewport padding
+        const pad = 8;
+        const rect = floatingClock.getBoundingClientRect();
+        const maxRight = window.innerWidth - rect.width - pad;
+        const maxBottom = window.innerHeight - rect.height - pad;
+
+        nextRight = clamp(nextRight, pad, maxRight);
+        nextBottom = clamp(nextBottom, pad, maxBottom);
+
+        floatingClock.style.right = nextRight + "px";
+        floatingClock.style.bottom = nextBottom + "px";
+      }
+
+      function onUp(){
+        if(!dragging) return;
+        dragging = false;
+        header.style.cursor = "";
+        document.removeEventListener("mousemove", onMove);
+        document.removeEventListener("mouseup", onUp);
+        document.removeEventListener("touchmove", onMove);
+        document.removeEventListener("touchend", onUp);
+
+        // save position
+        const right = parseFloat(getComputedStyle(floatingClock).right) || 14;
+        const bottom = parseFloat(getComputedStyle(floatingClock).bottom) || 14;
+        try{
+          localStorage.setItem("cowomo_clock_pos", JSON.stringify({ right, bottom }));
+        }catch(e){}
+      }
+
+      header.addEventListener("mousedown", onDown);
+      header.addEventListener("touchstart", onDown, { passive: true });
+    })();
+
+    // -----------------------------
+    // Stock ticker (offline demo)
+    // -----------------------------
+    const TICKERS = [
+      { sym:"SPY", name:"S&P 500 ETF", price: 0, chg: 0 },
+      { sym:"QQQ", name:"Nasdaq 100 ETF", price: 0, chg: 0 },
+      { sym:"AAPL", name:"Apple", price: 0, chg: 0 },
+      { sym:"MSFT", name:"Microsoft", price: 0, chg: 0 },
+      { sym:"NVDA", name:"NVIDIA", price: 0, chg: 0 },
+      { sym:"TSLA", name:"Tesla", price: 0, chg: 0 },
+      { sym:"BTC", name:"Bitcoin", price: 0, chg: 0 },
+      { sym:"ETH", name:"Ethereum", price: 0, chg: 0 }
+    ];
+
+    // seed values (deterministic-ish per session)
+    function seedBase(){
+      const base = {
+        SPY: 480.12,
+        QQQ: 420.55,
+        AAPL: 192.34,
+        MSFT: 415.08,
+        NVDA: 875.22,
+        TSLA: 201.67,
+        BTC: 61250.00,
+        ETH: 3320.00
+      };
+      TICKERS.forEach(t => { t.price = base[t.sym] ?? (Math.random()*200+50); t.chg = 0; });
+    }
+    seedBase();
+
+    const tickerTrack = document.getElementById("tickerTrack");
+
+    function chgClass(v){
+      if(v > 0.0001) return "up";
+      if(v < -0.0001) return "down";
+      return "flat";
+    }
+
+    function fmtPrice(sym, v){
+      const isCrypto = (sym === "BTC" || sym === "ETH");
+      return isCrypto ? v.toLocaleString(undefined, { maximumFractionDigits: 0 }) :
+                        v.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    function fmtPct(v){
+      const sign = v > 0 ? "+" : (v < 0 ? "−" : "");
+      return `${sign}${Math.abs(v).toFixed(2)}%`;
+    }
+
+    function renderTicker(){
+      const items = TICKERS.map(t => {
+        const cls = chgClass(t.chg);
+        return `
+          <span class="tick">
+            <b>${escapeHtml(t.sym)}</b>
+            <span class="p">${escapeHtml(fmtPrice(t.sym, t.price))}</span>
+            <span class="chg ${cls}">${escapeHtml(fmtPct(t.chg))}</span>
+          </span>
+        `;
+      }).join("");
+
+      // Duplicate content so marquee can loop seamlessly
+      tickerTrack.innerHTML = items + items;
+    }
+
+    function tickTicker(){
+      // small random walk
+      TICKERS.forEach(t => {
+        const vol = (t.sym === "BTC" || t.sym === "ETH") ? 0.0012 : 0.0008;
+        const deltaPct = (Math.random() - 0.5) * vol * 100; // percent points
+        t.chg = clampNum(t.chg + deltaPct, -4.5, 4.5);
+        t.price = Math.max(0.01, t.price * (1 + (deltaPct/100)));
+      });
+      renderTicker();
+    }
+
+    function clampNum(n, min, max){ return Math.max(min, Math.min(max, n)); }
+
+    renderTicker();
+    setInterval(tickTicker, 2500);
+
+    // -----------------------------
+    // Reviews App (your original code)
+    // -----------------------------
     const REVIEWS = [
       {
         id: "cowomo-001",
         type: "Coffee House",
         name: "Brew & Byte",
         address: "123 Queens Blvd, Queens, NY 11101",
-        // lat: 40.744, lng: -73.948, // optional
         image: "https://images.unsplash.com/photo-1517705008128-361805f42e86?auto=format&fit=crop&w=1600&q=70",
         notes:
 `Strong morning spot for laptop sessions.
@@ -788,27 +1262,22 @@ Try: almond croissant + cold brew.`,
 
     // ---- Map helpers ----
     function makeMapsQuery(r){
-      // Prefer coordinates if provided
       if(typeof r.lat === "number" && typeof r.lng === "number"){
         return `${r.lat},${r.lng}`;
       }
-      // fallback to address
       return r.address;
     }
 
     function setMap(r){
       const q = encodeURIComponent(makeMapsQuery(r));
-      // no-key embed search
       mapFrame.src = `https://www.google.com/maps?q=${q}&output=embed`;
       openMaps.href = `https://www.google.com/maps/search/?api=1&query=${q}`;
     }
 
     // ---- FLIP expand animation ----
     function animateSheetFromRect(fromRect){
-      // Compute final rect
       const toRect = sheet.getBoundingClientRect();
 
-      // Set sheet to fixed at final position for transform animation
       sheet.classList.add("is-animating");
 
       const dx = (fromRect.left + fromRect.width/2) - (toRect.left + toRect.width/2);
@@ -819,13 +1288,11 @@ Try: almond croissant + cold brew.`,
       sheet.style.transform = `translate(-50%, -50%) translate(${dx}px, ${dy}px) scale(${sx}, ${sy})`;
       sheet.style.transition = "none";
 
-      // next frame -> animate to normal
       requestAnimationFrame(() => {
         sheet.style.transition = `transform 360ms var(--ease)`;
         sheet.style.transform = "translate(-50%, -50%) translate(0px, 0px) scale(1, 1)";
       });
 
-      // cleanup after animation
       const done = () => {
         sheet.classList.remove("is-animating");
         sheet.style.transition = "";
@@ -842,14 +1309,12 @@ Try: almond croissant + cold brew.`,
 
       openId = id;
 
-      // Remember the card rect for animation
       if(cardEl){
         lastCardRect = cardEl.getBoundingClientRect();
       }else{
         lastCardRect = null;
       }
 
-      // Fill detail
       detailImg.src = r.image;
       detailImg.alt = `${r.name} photo`;
       detailTitle.textContent = r.name;
@@ -861,18 +1326,14 @@ Try: almond croissant + cold brew.`,
       detailOutlets.textContent = r.outlets;
       detailNoise.textContent = r.noise;
 
-      // Set map
       setMap(r);
 
-      // Show overlay
       overlay.classList.add("open");
       overlay.setAttribute("aria-hidden", "false");
       document.body.style.overflow = "hidden";
 
-      // Hash for share
       history.replaceState(null, "", `#${encodeURIComponent(id)}`);
 
-      // Run expand animation after visible
       requestAnimationFrame(() => {
         if(lastCardRect) animateSheetFromRect(lastCardRect);
       });
@@ -883,7 +1344,7 @@ Try: almond croissant + cold brew.`,
       overlay.classList.remove("open");
       overlay.setAttribute("aria-hidden", "true");
       document.body.style.overflow = "";
-      mapFrame.src = ""; // stop map load when closed
+      mapFrame.src = "";
 
       history.replaceState(null, "", location.pathname + location.search);
     }
